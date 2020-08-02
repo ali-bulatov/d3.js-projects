@@ -8,9 +8,19 @@ rect {
 }
 
 text {
-  font-size: 1.3em;
+  font-size: 2em;
+  font-family: Arial, Helvetica, sans-serif;
 }
 
-h1 {
-  text-align: center;
+.tick text {
+  fill: #635f5d;
+}
+.tick line {
+  stroke: #c0c0bb;
+}
+.axis-label {
+  fill: #635f5d;
+}
+.title {
+  fill: #555;
 }

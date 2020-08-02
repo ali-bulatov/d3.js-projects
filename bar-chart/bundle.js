@@ -11,7 +11,7 @@
   const render = (data) => {
     const xValue = (d) => d.population;
     const yValue = (d) => d.country;
-    const margin = { top: 20, right: 40, bottom: 20, left: 100 };
+    const margin = { top: 50, right: 40, bottom: 60, left: 140 };
     const innerWidth = width - margin.left - margin.right;
     const innerHeight = height - margin.top - margin.bottom;
 
@@ -27,10 +27,28 @@
       .append("g")
       .attr("transform", `translate(${margin.left},${margin.top})`);
 
-    g.append("g").call(d3.axisLeft(yScale));
+    const xAxisTickFormat = (number) => d3.format(".3s")(number).replace("G", "B");
+    const xAxis = d3.axisBottom(xScale)
+      .tickFormat(xAxisTickFormat)
+      .tickSize(-innerHeight);
+
     g.append("g")
-      .call(d3.axisBottom(xScale))
+      .call(d3.axisLeft(yScale))
+      .selectAll(".domain, .tick line")
+      .remove();
+
+    const xAxisG = g
+      .append("g")
+      .call(xAxis)
       .attr("transform", `translate(0,${innerHeight})`);
+    xAxisG.select(".domain").remove();
+    xAxisG
+      .append("text")
+      .attr("y", 50)
+      .attr("x", innerWidth / 2)
+      .attr("fill", "black")
+      .attr("class", "axis-label")
+      .text("Population");
 
     g.selectAll("rect")
       .data(data)
@@ -39,6 +57,10 @@
       .attr("y", (d) => yScale(yValue(d)))
       .attr("width", (d) => xScale(xValue(d)))
       .attr("height", yScale.bandwidth());
+    g.append("text")
+      .attr("y", -10)
+      .attr("class", "title")
+      .text("Top 10 Most Populous Countries");
   };
 
   d3.csv("data.csv").then((data) => {
