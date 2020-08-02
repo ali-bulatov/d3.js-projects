@@ -1,5 +1,5 @@
 (function (global, factory) {
-  typeof exports === 'object' && typeof module !== 'undefined' ? factory(require('d3')) :
+  typeof exports === 'object' && typeof module !== 'undefined' ? factory(require('./node_modules/d3')) :
   typeof define === 'function' && define.amd ? define(['d3'], factory) :
   (global = typeof globalThis !== 'undefined' ? globalThis : global || self, factory(global.d3));
 }(this, (function (d3) { 'use strict';
