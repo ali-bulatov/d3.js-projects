@@ -30,7 +30,7 @@
 
     // CREATE Y AXIS
     const yScale = d3.scaleLinear()
-      .domain(d3.extent(data, xValue))
+      .domain(d3.extent(data, yValue))
       .range([0, innerHeight])
       .nice();
 

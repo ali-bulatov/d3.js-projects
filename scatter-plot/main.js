@@ -26,7 +26,7 @@ const render = (data) => {
 
   // CREATE Y AXIS
   const yScale = scaleLinear()
-    .domain(extent(data, xValue))
+    .domain(extent(data, yValue))
     .range([0, innerHeight])
     .nice();
 
