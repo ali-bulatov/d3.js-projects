@@ -7,41 +7,42 @@
   const colorScale = d3.scaleOrdinal()
     .domain(["apple", "lemon"])
     .range(["#c1dd1d", "yellow"]);
-
   const radiusScale = d3.scaleOrdinal()
     .domain(["apple", "lemon"])
     .range(["50", "25"]);
 
-  const xPosition = (d, i) => i * 120 + 60;
-
   const fruitBowl = (selection, props) => {
     const { fruits, height } = props;
-    // selectAll.data is when you create the D3 data join: arr of data and elements(DOM), enter->update(dom and data)->exit(dom without data)
-    const circles = selection
-      // select elements
-      .selectAll("circle")
-      // set up data part
-      .data(fruits, (d) => d.id);
 
-    // data elements with no dom elements
-    circles
+    const bowl = selection
+      .selectAll("rect")
+      .append("center")
+      .data([null])
       .enter()
-      // append dom to each data entry
+      .append("rect")
+      .attr("y", 110)
+      .attr("width", 600)
+      .attr("height", 300)
+      .attr("rx", 50);
+
+    const groups = selection.selectAll("g").data(fruits);
+    const groupsEnter = groups.enter().append("g");
+    groupsEnter
+      .merge(groups)
+      .attr("transform", (d, i) => `translate(${i * 120 + 60},${height / 2})`);
+    groups.exit().remove();
+
+    groupsEnter
       .append("circle")
-      .attr("cx", xPosition)
-      .attr("cy", height / 2)
-      .attr("r", 0)
-      // MERGE enter update selection
-      .merge(circles)
-      // ADD animated transition
-      .transition()
-      .duration(1000)
-      .attr("cx", xPosition)
+      .merge(groups.select("circle"))
       .attr("r", (d) => radiusScale(d.type))
       .attr("fill", (d) => colorScale(d.type));
 
-    // remove everything from the exit selection from the DOM
-    circles.exit().transition().duration(1000).attr("r", 0).remove();
+    groupsEnter
+      .append("text")
+      .merge(groups.select("text"))
+      .text((d) => d.type)
+      .attr("y", 120);
   };
 
   const svg = d3.select("svg");
